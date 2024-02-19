@@ -32,24 +32,24 @@
     ignore_errors: yes
 
   - name: Delete existing Docker images from the Control Node
-    shell: docker rmi `docker image ls | egrep "sample-webapp-docker-image" | awk '{print$3}'` -f
+    shell: docker rmi `docker image ls | egrep "xyztech-webapp-docker-image" | awk '{print$3}'` -f
     ignore_errors: yes
 
-  - name: Build a Docker image using ABCtechnologies-1.0.war file
+  - name: Build a Docker image using XYZtechnologies-1.0.war file
     docker_image:
-      name: sample-webapp-docker-image
+      name: xyztech-webapp-docker-image
       build:
         path: /opt/docker
         pull: true
       state: present
       tag: "latest"
       force_tag: yes
-      repository: karthickmuthaiyan/sample-webapp-docker-image:latest
+      repository: karthickmuthaiyan/xyztech-webapp-docker-image:latest
       push: yes
       source: build
       
   - name: Delete existing Docker images from the Control Node
-    shell: docker rmi `docker image ls | egrep "sample-webapp-docker-image" | awk '{print$3}'` -f
+    shell: docker rmi `docker image ls | egrep "xyztech-webapp-docker-image" | awk '{print$3}'` -f
     ignore_errors: yes
     
 - name: Import Ansible playbook to deploy into Kubernetes cluster
