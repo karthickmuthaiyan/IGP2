@@ -2,8 +2,8 @@ FROM tomcat:latest
 
 LABEL maintainer="Karthick Muthaiyan"
 
-COPY ABCtechnologies-1.0.war /usr/local/tomcat/webapps/ROOT.war
+COPY XYZtechnologies-1.0.war /usr/local/tomcat/webapps/ROOT.war
 
-EXPOSE 8080
+EXPOSE 8081
 
 CMD ["catalina.sh", "run"]
