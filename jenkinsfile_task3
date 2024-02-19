@@ -5,7 +5,7 @@ pipeline {
             //agent { label 'jenkinagent01' }
             steps {
                     // Get some code from a GitHub repository
-                    git branch:'main', url:'https://github.com/karthickmuthaiyan/IGP1.git'
+                    git branch:'main', url:'https://github.com/karthickmuthaiyan/IGP2.git'
                     // Run Maven on a Unix agent.
                     sh "mvn -Dmaven.test.failure.ignore=true clean package"
                     // To run Maven on a Windows agent, use
@@ -23,8 +23,8 @@ pipeline {
 	stage('Docker Build and Tag') {
            steps {
               
-                sh 'docker build -t igp1webapp:latest .' 
-                sh 'docker tag igp1webapp karthickmuthaiyan/igp1webapp:latest'
+                sh 'docker build -t igp2webapp:latest .' 
+                sh 'docker tag igp2webapp karthickmuthaiyan/igp2webapp:latest'
                 //sh 'docker tag samplewebapp karthickmuthaiyan/samplewebapp:$BUILD_NUMBER'
                
           	}
@@ -32,7 +32,7 @@ pipeline {
 	stage('Publish image to Docker Hub') {
             steps {
         	    withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
-	            sh  'docker push karthickmuthaiyan/igp1webapp:latest'
+	            sh  'docker push karthickmuthaiyan/igp2webapp:latest'
         	//  sh  'docker push karthickmuthaiyan/samplewebapp:$BUILD_NUMBER' 
 	                }
                   
@@ -40,7 +40,7 @@ pipeline {
         }
        stage('Run Docker container on Jenkins Agent') {     
             steps {
-                sh "docker run -d -p 8080:8080 karthickmuthaiyan/igp1webapp"
+                sh "docker run -d -p 8080:8080 karthickmuthaiyan/igp2webapp"
              }
         }
     }
