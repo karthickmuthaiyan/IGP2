@@ -2,18 +2,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: sample-web-app
-  name: sample-web-app
+    app: xyztech-web-app
+  name: xyztech-web-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sample-web-app
+      app: xyztech-web-app
   template:
     metadata:
       labels:
-        app: sample-web-app
+        app: xyztech-web-app
     spec:
       containers:
-      - image: karthickmuthaiyan/sample-webapp-docker-image
-        name: sample-webapp-docker-image
+      - image: karthickmuthaiyan/xyztech-webapp-docker-image
+        name: xyztech-webapp-docker-image
