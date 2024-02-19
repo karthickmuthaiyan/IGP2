@@ -1,29 +1,8 @@
 pipeline {
     agent { label 'jenkinagent01' }
     stages {
-        stage('Compile') {
-            steps {
-                    // Get some code from a GitHub repository
-                    sh "who "
-                    sh " echo $PATH"
-                    git branch:'main', url:'https://github.com/karthickmuthaiyan/IGP2.git'
-                    // Run Maven on a Unix agent.
-                    sh "mvn -Dmaven.test.failure.ignore=true clean compile"
-                    // To run Maven on a Windows agent, use
-                    //bat "mvn -Dmaven.test.failure.ignore=true clean compile"
-                }
-            }
-        stage('Test') {
-            steps {
-                    // Get some code from a GitHub repository
-                    git branch:'main', url:'https://github.com/karthickmuthaiyan/IGP2.git'
-                    // Run Maven on a Unix agent.
-                    sh "mvn -Dmaven.test.failure.ignore=true clean test"
-                    // To run Maven on a Windows agent, use
-                    //bat "mvn -Dmaven.test.failure.ignore=true clean test"
-                }
-            }
         stage('Package') {
+            //agent { label 'jenkinagent01' }
             steps {
                     // Get some code from a GitHub repository
                     git branch:'main', url:'https://github.com/karthickmuthaiyan/IGP2.git'
@@ -41,5 +20,28 @@ pipeline {
                     }       
                 }
             }
+	stage('Docker Build and Tag') {
+           steps {
+              
+                sh 'docker build -t igp2webapp:latest .' 
+                sh 'docker tag igp2webapp karthickmuthaiyan/igp2webapp:latest'
+                //sh 'docker tag samplewebapp karthickmuthaiyan/samplewebapp:$BUILD_NUMBER'
+               
+          	}
+        }
+	stage('Publish image to Docker Hub') {
+            steps {
+        	    withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
+	            sh  'docker push karthickmuthaiyan/igp2webapp:latest'
+        	//  sh  'docker push karthickmuthaiyan/samplewebapp:$BUILD_NUMBER' 
+	                }
+                  
+	        }
+        }
+       stage('Run Docker container on Jenkins Agent') {     
+            steps {
+                sh "docker run -d -p 8080:8080 karthickmuthaiyan/igp2webapp"
+             }
         }
     }
+ }
